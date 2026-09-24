@@ -1,0 +1,209 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://triggerflow.iris-hep.org/schemas/model.schema.json",
+  "title": "TriggerFlow model specification",
+  "description": "One node in the L1T model network. One file per model under models/. See PLAN.md §6.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["name", "owners", "description", "training", "consumes", "produces", "deployment"],
+  "properties": {
+    "name": {
+      "description": "Logical model name. Used as the Dagster asset key prefix and the MLflow registered model name.",
+      "$ref": "#/$defs/identifier"
+    },
+    "owners": {
+      "description": "Accountable owners, in Dagster owner format: 'team:<name>' or an email address.",
+      "type": "array",
+      "minItems": 1,
+      "uniqueItems": true,
+      "items": {
+        "type": "string",
+        "pattern": "^(team:[A-Za-z0-9][A-Za-z0-9_.-]*|[^@\\s]+@[^@\\s]+\\.[^@\\s]+)$"
+      }
+    },
+    "description": {
+      "type": "string",
+      "minLength": 1
+    },
+    "training": {
+      "$ref": "#/$defs/training"
+    },
+    "consumes": {
+      "description": "Inputs to this model: upstream models and raw datasets.",
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "oneOf": [
+          { "$ref": "#/$defs/model_edge" },
+          { "$ref": "#/$defs/dataset_edge" }
+        ]
+      }
+    },
+    "produces": {
+      "description": "Named outputs of this model's inference step. These are contracts for downstream consumers.",
+      "type": "array",
+      "minItems": 1,
+      "items": { "$ref": "#/$defs/output" }
+    },
+    "deployment": {
+      "$ref": "#/$defs/deployment"
+    },
+    "acceptance": {
+      "description": "Blocking physics acceptance gates evaluated on the candidate (PLAN.md §12).",
+      "type": "array",
+      "items": { "$ref": "#/$defs/acceptance_gate" }
+    }
+  },
+  "$defs": {
+    "identifier": {
+      "type": "string",
+      "pattern": "^[a-z][a-z0-9_]*$"
+    },
+    "training": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["entrypoint", "image", "resources", "seed"],
+      "properties": {
+        "entrypoint": {
+          "description": "Python callable as 'package.module:function'.",
+          "type": "string",
+          "pattern": "^[A-Za-z_][A-Za-z0-9_]*(\\.[A-Za-z_][A-Za-z0-9_]*)*:[A-Za-z_][A-Za-z0-9_]*$"
+        },
+        "image": {
+          "description": "Training container image. Must be pinned by digest so image changes mark the model stale.",
+          "type": "string",
+          "pattern": "^[^\\s@]+@sha256:[0-9a-f]{64}$"
+        },
+        "resources": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "cpu": { "type": "number", "exclusiveMinimum": 0 },
+            "gpu": { "type": "integer", "minimum": 0 },
+            "gpu_type": { "type": "string", "minLength": 1 },
+            "memory": {
+              "description": "Kubernetes-style memory quantity, e.g. 64Gi.",
+              "type": "string",
+              "pattern": "^[0-9]+(\\.[0-9]+)?(Ki|Mi|Gi|Ti|K|M|G|T)?$"
+            },
+            "walltime": {
+              "description": "Maximum wall time, e.g. 30m, 8h, 2d.",
+              "type": "string",
+              "pattern": "^[0-9]+(s|m|h|d)$"
+            }
+          }
+        },
+        "seed": {
+          "type": "integer",
+          "minimum": 0
+        }
+      }
+    },
+    "model_edge": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["model", "kind"],
+      "properties": {
+        "model": { "$ref": "#/$defs/identifier" },
+        "kind": {
+          "description": "training_input: retrain this model when the upstream champion changes. runtime_only: revalidate only.",
+          "enum": ["training_input", "runtime_only"]
+        },
+        "output": {
+          "description": "Named output of the upstream model (one of its produces[].name).",
+          "$ref": "#/$defs/identifier"
+        }
+      },
+      "if": {
+        "properties": { "kind": { "const": "training_input" } }
+      },
+      "then": {
+        "required": ["output"]
+      }
+    },
+    "dataset_edge": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["dataset"],
+      "properties": {
+        "dataset": { "$ref": "#/$defs/identifier" }
+      }
+    },
+    "output": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["name", "schema", "format"],
+      "properties": {
+        "name": { "$ref": "#/$defs/identifier" },
+        "schema": {
+          "description": "Versioned JSON schema describing the output columns, e.g. schemas/jet_tags.v1.json.",
+          "type": "string",
+          "pattern": "^schemas/[A-Za-z0-9_]+\\.v[0-9]+\\.json$"
+        },
+        "format": {
+          "enum": ["parquet", "root", "hdf5"]
+        }
+      }
+    },
+    "deployment": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["target", "frontend", "precision", "budget"],
+      "properties": {
+        "target": {
+          "description": "Firmware location this model is deployed to, e.g. correlator_layer2.",
+          "$ref": "#/$defs/identifier"
+        },
+        "frontend": {
+          "enum": ["hls4ml", "conifer"]
+        },
+        "precision": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["framework", "default"],
+          "properties": {
+            "framework": {
+              "description": "Quantization framework used for QAT.",
+              "enum": ["qkeras", "hgq2", "brevitas", "qonnx", "xgboost"]
+            },
+            "default": {
+              "description": "Default HLS fixed-point type, e.g. ap_fixed<16,6>.",
+              "type": "string",
+              "pattern": "^ap_u?(fixed<[0-9]+,-?[0-9]+(,[A-Z_]+)*>|int<[0-9]+>)$"
+            }
+          }
+        },
+        "budget": {
+          "description": "Blocking FPGA resource and latency gates (PLAN.md §12).",
+          "type": "object",
+          "additionalProperties": false,
+          "minProperties": 1,
+          "properties": {
+            "latency_ns": { "type": "number", "exclusiveMinimum": 0 },
+            "latency_ticks": { "type": "integer", "minimum": 1 },
+            "initiation_interval": { "type": "integer", "minimum": 1 },
+            "dsp": { "type": "integer", "minimum": 0 },
+            "lut": { "type": "integer", "minimum": 0 },
+            "ff": { "type": "integer", "minimum": 0 },
+            "bram_18k": { "type": "integer", "minimum": 0 },
+            "uram": { "type": "integer", "minimum": 0 }
+          }
+        }
+      }
+    },
+    "acceptance_gate": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["metric"],
+      "anyOf": [
+        { "required": ["min"] },
+        { "required": ["max"] }
+      ],
+      "properties": {
+        "metric": { "$ref": "#/$defs/identifier" },
+        "min": { "type": "number" },
+        "max": { "type": "number" }
+      }
+    }
+  }
+}

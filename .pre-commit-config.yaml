@@ -1,0 +1,13 @@
+repos:
+  - repo: https://github.com/python-jsonschema/check-jsonschema
+    rev: 0.38.2
+    hooks:
+      # The model schema must itself be a valid JSON Schema.
+      - id: check-metaschema
+        name: Validate model schema
+        files: ^models/model\.schema\.json$
+      # Every model spec must conform to the model schema.
+      - id: check-jsonschema
+        name: Validate model specs
+        files: ^models/.*\.ya?ml$
+        args: ["--schemafile", "models/model.schema.json"]
