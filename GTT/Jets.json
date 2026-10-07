@@ -1,0 +1,8 @@
+{
+    "$schema": "../model.schema.json",
+    "name": "VertexFinding",
+    "description": "Vertex finding algorithm, takes tracks and produces a primary vertex",
+    "training": "None",
+    "consumes":["AssociatedTracks"],
+    "produces": ["TrackJets"],
+}

@@ -1,0 +1,8 @@
+{
+    "$schema": "../model.schema.json",
+    "name": "W3Pi",
+    "description": "Track based W to 3 Pi algorithm",
+    "training": "None",
+    "consumes":["AssociatedTracks"],
+    "produces": ["W3PiScore"],
+}

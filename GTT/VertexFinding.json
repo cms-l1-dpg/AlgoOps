@@ -1,0 +1,8 @@
+{
+    "$schema": "../model.schema.json",
+    "name": "VertexFinding",
+    "description": "Vertex finding algorithm, takes tracks and produces a primary vertex",
+    "training": {"https://gitlab.cern.ch/ml_l1/l1-vertex-finding"},
+    "consumes":["SelectedTracks"],
+    "produces": ["Vertex"],
+}

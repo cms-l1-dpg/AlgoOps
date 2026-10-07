@@ -1,0 +1,8 @@
+{
+    "$schema": "../model.schema.json",
+    "name": "TrackToVertexAssociation",
+    "description": "Track to vertex association, matches tracks to the vertex",
+    "training": {"https://gitlab.cern.ch/ml_l1/l1-vertex-finding"},
+    "consumes":["SelectedTracks","Vertex"],
+    "produces": ["AssociatedTracks"],
+}

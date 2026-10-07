@@ -1,0 +1,8 @@
+{
+    "$schema": "../model.schema.json",
+    "name": "TrackMET",
+    "description": "Track based missing ET algorithm",
+    "training": "None",
+    "consumes":["AssociatedTracks"],
+    "produces": ["TrackMissingET"],
+}

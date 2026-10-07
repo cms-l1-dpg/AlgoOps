@@ -1,0 +1,8 @@
+{
+    "$schema": "../model.schema.json",
+    "name": "GTTTrackSelection",
+    "description": "GTT track selection algorithm",
+    "training": "None",
+    "consumes":["Tracks"],
+    "produces": ["SelectedTracks"],
+}
