@@ -1,0 +1,8 @@
+{
+    "$schema": "../model.schema.json",
+    "name": "PFBarrel",
+    "description": "Particle Flow algorithm",
+    "training": "None",
+    "consumes":["Tracks","Muons","ECalClusters","HCalClusters"],
+    "produces": ["BarrelPFMuons","BarrelPFElectrons","BarrelPFChargedHadrons","BarrelPFPhotons","BarrelPFNeutralHadrons"]
+}

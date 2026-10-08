@@ -1,0 +1,8 @@
+{
+    "$schema": "../model.schema.json",
+    "name": "PUPPIEndcapNeutral",
+    "description": "PUPPI Neutral Endcap region",
+    "training": "None",
+    "consumes":["EndcapPFPhotons","EndcapPFNeutralHadrons"],
+    "produces": ["EndcapPUPPIPhotons","EndcapPUPPINeutralHadrons"],
+}

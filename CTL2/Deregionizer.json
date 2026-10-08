@@ -1,0 +1,10 @@
+{
+    "$schema": "../model.schema.json",
+    "name": "Deregionizer",
+    "description": "Correlator Layer 2 Deregionizer",
+    "training": "None",
+    "consumes":["EndcapPUPPIPhotons","EndcapPUPPINeutralHadrons","BarrelPUPPIPhotons","BarrelPUPPINeutralHadrons",
+                "BarrelPUPPIMuons","BarrelPUPPIElectrons","BarrelPUPPIChargedHadrons",
+                "EndcapPUPPIMuons","EndcapPUPPIElectrons","EndcapPUPPIChargedHadrons"],
+    "produces": ["PUPPICandidates"]
+}

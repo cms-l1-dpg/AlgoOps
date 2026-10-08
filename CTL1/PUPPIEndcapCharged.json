@@ -1,0 +1,8 @@
+{
+    "$schema": "../model.schema.json",
+    "name": "PUPPIEndcapCharged",
+    "description": "PUPPI Charged Endcap region",
+    "training": "None",
+    "consumes": ["AssociatedEndcapPFMuons","AssociatedEndcapPFElectrons","AssociatedEndcapPFChargedHadrons"],
+    "produces": ["EndcapPUPPIMuons","EndcapPUPPIElectrons","EndcapPUPPIChargedHadrons"],
+}

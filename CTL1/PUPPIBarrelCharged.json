@@ -1,0 +1,8 @@
+{
+    "$schema": "../model.schema.json",
+    "name": "PUPPIBarrelCharged",
+    "description": "PUPPI charged barrel region",
+    "training": "None",
+    "consumes":["AssociatedBarrelPFMuons","AssociatedBarrelPFElectrons","AssociatedBarrelPFChargedHadrons"],
+    "produces": ["BarrelPUPPIMuons","BarrelPUPPIElectrons","BarrelPUPPIChargedHadrons"]
+}
