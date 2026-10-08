@@ -1,0 +1,8 @@
+{
+    "$schema": "../model.schema.json",
+    "name": "JetTagging",
+    "description": "Next Generation Jet Tagging AK4 algorithm",
+    "training": "None",
+    "consumes":["PUPPICandidates","AK4Jets"],
+    "produces": ["NGJets"]
+}

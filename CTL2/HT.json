@@ -1,0 +1,8 @@
+{
+    "$schema": "../model.schema.json",
+    "name": "HT",
+    "description": "Transverse Hadronic Energy Algorithm",
+    "training": "None",
+    "consumes":["NGJets"],
+    "produces": ["CTL2HT"]
+}
