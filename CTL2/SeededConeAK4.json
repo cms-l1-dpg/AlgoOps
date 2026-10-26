@@ -2,7 +2,11 @@
     "$schema": "../model.schema.json",
     "name": "SeededConeAK4",
     "description": "Seeded Cone Jet finding AK4 algorithm",
-    "training": "None",
-    "consumes":["PUPPICandidates"],
-    "produces": ["AK4Jets"]
+    "training": null,
+    "consumes": [
+        "PUPPICandidates"
+    ],
+    "produces": [
+        "AK4Jets"
+    ]
 }

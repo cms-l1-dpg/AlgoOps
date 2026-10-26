@@ -2,7 +2,17 @@
     "$schema": "../model.schema.json",
     "name": "PFEndcap",
     "description": "Particle Flow algorithm Tracker Covered Endcap Region",
-    "training": "None",
-    "consumes":["Tracks","Muons","HGCalClusters"],
-    "produces": ["EndcapPFMuons","EndcapPFElectrons","EndcapPFChargedHadrons","EndcapPFPhotons","EndcapPFNeutralHadrons"]
+    "training": null,
+    "consumes": [
+        "Tracks",
+        "Muons",
+        "HGCalClusters"
+    ],
+    "produces": [
+        "EndcapPFMuons",
+        "EndcapPFElectrons",
+        "EndcapPFChargedHadrons",
+        "EndcapPFPhotons",
+        "EndcapPFNeutralHadrons"
+    ]
 }

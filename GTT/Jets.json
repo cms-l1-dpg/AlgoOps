@@ -1,8 +1,12 @@
 {
     "$schema": "../model.schema.json",
-    "name": "VertexFinding",
-    "description": "Vertex finding algorithm, takes tracks and produces a primary vertex",
-    "training": "None",
-    "consumes":["AssociatedTracks"],
-    "produces": ["TrackJets"],
+    "name": "TrackJets",
+    "description": "Track jet algorithm, clusters associated tracks into jets",
+    "training": null,
+    "consumes": [
+        "AssociatedTracks"
+    ],
+    "produces": [
+        "TrackJets"
+    ]
 }
