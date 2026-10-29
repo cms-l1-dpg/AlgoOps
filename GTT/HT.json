@@ -1,0 +1,12 @@
+{
+    "$schema": "../model.schema.json",
+    "name": "TrackHT",
+    "description": "Track Jets Hadronic Transverse Energy",
+    "training": null,
+    "consumes": [
+        "TrackJets"
+    ],
+    "produces": [
+        "TrackMHT"
+    ]
+}

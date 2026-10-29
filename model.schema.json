@@ -26,7 +26,11 @@
       "minLength": 1
     },
     "training": {
-      "$ref": "#/$defs/training"
+      "description": "Where this model is trained. null means the model is not trainable.",
+      "oneOf": [
+        { "$ref": "#/$defs/training" },
+        { "type": "null" }
+      ]
     },
     "consumes": {
       "description": "Inputs to this model: upstream models and raw datasets.",
@@ -60,42 +64,27 @@
       "pattern": "^[a-z][a-z0-9_]*$"
     },
     "training": {
+      "description": "Training runs in the algorithm's own GitLab repo CI, which owns the MLflow run (triggerflow MLFLOW_PLAN.md §4).",
       "type": "object",
       "additionalProperties": false,
-      "required": ["entrypoint", "image", "resources", "seed"],
+      "required": ["repo"],
       "properties": {
-        "entrypoint": {
-          "description": "Python callable as 'package.module:function'.",
+        "repo": {
+          "description": "GitLab project URL whose CI pipeline trains this model.",
           "type": "string",
-          "pattern": "^[A-Za-z_][A-Za-z0-9_]*(\\.[A-Za-z_][A-Za-z0-9_]*)*:[A-Za-z_][A-Za-z0-9_]*$"
+          "format": "uri",
+          "pattern": "^https://[^\\s]+$"
         },
-        "image": {
-          "description": "Training container image. Must be pinned by digest so image changes mark the model stale.",
+        "ref": {
+          "description": "Branch to train from. Defaults to main.",
           "type": "string",
-          "pattern": "^[^\\s@]+@sha256:[0-9a-f]{64}$"
+          "minLength": 1,
+          "default": "main"
         },
-        "resources": {
-          "type": "object",
-          "additionalProperties": false,
-          "properties": {
-            "cpu": { "type": "number", "exclusiveMinimum": 0 },
-            "gpu": { "type": "integer", "minimum": 0 },
-            "gpu_type": { "type": "string", "minLength": 1 },
-            "memory": {
-              "description": "Kubernetes-style memory quantity, e.g. 64Gi.",
-              "type": "string",
-              "pattern": "^[0-9]+(\\.[0-9]+)?(Ki|Mi|Gi|Ti|K|M|G|T)?$"
-            },
-            "walltime": {
-              "description": "Maximum wall time, e.g. 30m, 8h, 2d.",
-              "type": "string",
-              "pattern": "^[0-9]+(s|m|h|d)$"
-            }
-          }
-        },
-        "seed": {
-          "type": "integer",
-          "minimum": 0
+        "mlflow_model": {
+          "description": "MLflow registered model name the training CI registers to, e.g. gtt.vertex_finding.",
+          "type": "string",
+          "pattern": "^[a-z][a-z0-9_]*(\\.[a-z][a-z0-9_]*)*$"
         }
       }
     },

@@ -1,0 +1,17 @@
+{
+    "$schema": "../model.schema.json",
+    "name": "PUPPIVertexAssociationEndcap",
+    "description": "PUPPI object to vertex association endcap",
+    "training": null,
+    "consumes": [
+        "EndcapPFMuons",
+        "EndcapPFElectrons",
+        "EndcapPFChargedHadrons",
+        "Vertex"
+    ],
+    "produces": [
+        "AssociatedEndcapPFMuons",
+        "AssociatedEndcapPFElectrons",
+        "AssociatedEndcapPFChargedHadrons"
+    ]
+}

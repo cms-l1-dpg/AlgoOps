@@ -1,0 +1,17 @@
+{
+    "$schema": "../model.schema.json",
+    "name": "PUPPIVertexAssociationBarrel",
+    "description": "PUPPI object to vertex association barrel",
+    "training": null,
+    "consumes": [
+        "BarrelPFMuons",
+        "BarrelPFElectrons",
+        "BarrelPFChargedHadrons",
+        "Vertex"
+    ],
+    "produces": [
+        "AssociatedBarrelPFMuons",
+        "AssociatedBarrelPFElectrons",
+        "AssociatedBarrelPFChargedHadrons"
+    ]
+}

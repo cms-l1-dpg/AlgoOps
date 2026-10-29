@@ -1,0 +1,12 @@
+{
+    "$schema": "../model.schema.json",
+    "name": "TrackJets",
+    "description": "Track jet algorithm, clusters associated tracks into jets",
+    "training": null,
+    "consumes": [
+        "AssociatedTracks"
+    ],
+    "produces": [
+        "TrackJets"
+    ]
+}

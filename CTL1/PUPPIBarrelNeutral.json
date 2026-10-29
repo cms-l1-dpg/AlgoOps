@@ -1,0 +1,14 @@
+{
+    "$schema": "../model.schema.json",
+    "name": "PUPPIBarrelNeutral",
+    "description": "PUPPI Neutral barrel region",
+    "training": null,
+    "consumes": [
+        "BarrelPFPhotons",
+        "BarrelPFNeutralHadrons"
+    ],
+    "produces": [
+        "BarrelPUPPIPhotons",
+        "BarrelPUPPINeutralHadrons"
+    ]
+}

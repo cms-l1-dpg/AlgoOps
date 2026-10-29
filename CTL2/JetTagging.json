@@ -1,0 +1,16 @@
+{
+    "$schema": "../model.schema.json",
+    "name": "JetTagging",
+    "description": "Next Generation Jet Tagging AK4 algorithm",
+    "training": {
+        "repo": "https://gitlab.cern.ch/bgalewsk/mock-ctl2-jettagging",
+        "ref": "master"
+    },
+    "consumes": [
+        "PUPPICandidates",
+        "AK4Jets"
+    ],
+    "produces": [
+        "NGJets"
+    ]
+}
